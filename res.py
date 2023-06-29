@@ -11,6 +11,7 @@ headers = {
 	 'accept-language': 'en-US,en;q=0.9',
 	 'authorization': 'ResyAPI api_key="VbWk7s3L4KiK5fzlO7JD3Q5EYolJI7n5"',
 	 'content-type': 'application/x-www-form-urlencoded',
+	 'Cache-Control': 'no-cache',
 	 'accept': 'application/json, text/plain, */*',
 	 'referer': 'https://resy.com/',
 	 'authority': 'api.resy.com',
@@ -22,9 +23,11 @@ def login(username,password):
 	  'email': username,
 	  'password': password
 	}
+	print(username)
 
 	response = requests.post('https://api.resy.com/3/auth/password', headers=headers, data=data)
 	res_data = response.json()
+	
 	auth_token = res_data['token']
 	payment_method_string = '{"id":' + str(res_data['payment_method_id']) + '}'
 	return auth_token,payment_method_string
@@ -41,6 +44,7 @@ def find_table(res_date,party_size,table_time,auth_token,venue_id):
 	 ('venue_id',str(venue_id)),
 	)
 	response = requests.get('https://api.resy.com/4/find', headers=headers, params=params)
+	print("response:", response)
 	data = response.json()
 	results = data['results']
 	if len(results['venues']) > 0:
@@ -79,11 +83,11 @@ def make_reservation(auth_token,config_id,res_date,party_size):
 def try_table(day,party_size,table_time,auth_token,restaurant):
 	best_table = find_table(day,party_size,table_time,auth_token,restaurant)
 	if best_table is not None:
-        	hour = datetime.datetime.strptime(best_table['date']['start'],"%Y-%m-%d %H:%M:00").hour
-	        if (hour > 19) and (hour < 21):
-               	        config_id = best_table['config']['token']
-                        make_reservation(auth_token,config_id,day,party_size)
-       	                print 'success'
+		hour = datetime.datetime.strptime(best_table['date']['start'],"%Y-%m-%d %H:%M:00").hour
+		if (hour > 19) and (hour < 21):
+			config_id = best_table['config']['token']
+			make_reservation(auth_token,config_id,day,party_size)
+			print('success')
 			return 1
 	else:
 		time.sleep(1)
@@ -97,7 +101,7 @@ def readconfig():
 def main():
 	username, password, venue, date, guests = readconfig()
 	auth_token,payment_method_string = login(username,password)
-	print 'logged in succesfully - disown this task and allow it to run in the background'
+	print('logged in succesfully - disown this task and allow it to run in the background')
 	party_size = int(guests)
 	table_time = 20
 	day = datetime.datetime.strptime(date,'%m/%d/%Y')
@@ -108,7 +112,7 @@ def main():
 		try:
 			reserved = try_table(day,party_size,table_time,auth_token,restaurant)
 		except:
-			with open('failures.csv','ab') as outf:
+			with open('failures.csv', 'a', newline='') as outf:
 				writer = csv.writer(outf)
 				writer.writerow([time.time()])
 

@@ -1,0 +1,64 @@
+[
+  {
+    "restaurantID": 40703,
+    "restaurantName": "The Bar Room at The Beekman",
+    "restaurantDescription": "This is not just any hotel lobby bar. There’s nothing better than nestling yourself into one of the plush velvet or leather armchairs, martini in hand, and gazing up at that incredible nine-floor atrium. And Tom Colicchio’s classic small bites never disappoint.",
+    "restaurantType": "American",
+    "priceRange": 2,
+    "rating": "4.48",
+    "neighborhood": "Financial District",
+    "times": [
+      {
+        "date": "2023-06-30 19:30:00",
+        "roomType": "The Bar Room",
+        "token": "rgs://resy/40703/1484236/2/2023-06-30/2023-06-30/19:30:00/5/The Bar Room"
+      },
+      {
+        "date": "2023-06-30 19:45:00",
+        "roomType": "The Bar Room",
+        "token": "rgs://resy/40703/1484236/2/2023-06-30/2023-06-30/19:45:00/5/The Bar Room"
+      },
+      {
+        "date": "2023-06-30 20:00:00",
+        "roomType": "The Bar Room",
+        "token": "rgs://resy/40703/1484236/2/2023-06-30/2023-06-30/20:00:00/5/The Bar Room"
+      },
+      {
+        "date": "2023-06-30 20:15:00",
+        "roomType": "The Bar Room",
+        "token": "rgs://resy/40703/1484236/2/2023-06-30/2023-06-30/20:15:00/5/The Bar Room"
+      },
+      {
+        "date": "2023-06-30 20:30:00",
+        "roomType": "The Bar Room",
+        "token": "rgs://resy/40703/1484236/2/2023-06-30/2023-06-30/20:30:00/5/The Bar Room"
+      }
+    ]
+  },
+  {
+    "restaurantID": 72993,
+    "restaurantName": "Artesano",
+    "restaurantDescription": "This is tweezer food we actually want to eat. Artesano goes about Peruvian cuisine with a precision we don’t see often: Think octopus emulsions, rocoto gel, and cauliflower tiger’s milk alongside more robust dishes like Peruvian fried rice and short ribs.",
+    "restaurantType": "Peruvian",
+    "priceRange": 2,
+    "rating": "4.65",
+    "neighborhood": "Tribeca",
+    "times": [
+      {
+        "date": "2023-06-30 19:30:00",
+        "roomType": "Dining",
+        "token": "rgs://resy/72993/2221216/2/2023-06-30/2023-06-30/19:30:00/5/Dining"
+      },
+      {
+        "date": "2023-06-30 19:45:00",
+        "roomType": "Dining",
+        "token": "rgs://resy/72993/2221216/2/2023-06-30/2023-06-30/19:45:00/5/Dining"
+      },
+      {
+        "date": "2023-06-30 20:15:00",
+        "roomType": "Dining",
+        "token": "rgs://resy/72993/2221216/2/2023-06-30/2023-06-30/20:15:00/5/Dining"
+      }
+    ]
+  }
+]
