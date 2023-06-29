@@ -1,45 +1,10 @@
 import axios from 'axios'
 import * as fs from 'fs'
+import { FindResponse, Venue, Slot } from './interfaces'
 
 const headers = {
   authorization: 'ResyAPI api_key="VbWk7s3L4KiK5fzlO7JD3Q5EYolJI7n5"',
   'Cache-Control': 'no-cache',
-}
-
-// each venue (resturant) has an array of slots (times) for booking
-interface Venue {
-  slots: Slot[]
-  venue: {
-    id: {
-      resy: number
-    }
-    name: string
-    type: string
-    price_range: number
-    rating: string
-    location: {
-      neighborhood: string
-    }
-    content: {
-      body: string
-    }
-  }
-}
-
-interface Slot {
-  date: {
-    start: string
-  }
-  config: {
-    type: string
-    token: string
-  }
-}
-
-interface FindResponse {
-  results: {
-    venues: Venue[]
-  }
 }
 
 async function findTable(
@@ -99,6 +64,7 @@ async function findTable(
         const slotTime = startHours + startMinutes / 60
         const timeDifference = Math.abs(slotTime - table_time)
 
+        // Filter for time slots that are within 30 minutes of selected time
         if (timeDifference <= 0.5) {
           result.push({
             startTime: slot.date.start,
@@ -125,42 +91,9 @@ async function findTable(
     })
 
     console.log('restaurants', JSON.stringify(restaurants))
-
-    // if there are available venues, filter for times that match our search
-    // Filter for time slots that are within 30 minutes of selected time
-    if (open_slots.length > 0) {
-      const best_tables = open_slots.filter(
-        (slot) =>
-          Math.abs(
-            Number(
-              new Date(slot.date.start).getHours() +
-                new Date(slot.date.start).getMinutes() / 60
-            ) - table_time
-          ) <= 0.5
-      )
-
-      //console.log('best tables', best_tables)
-      //console.log('length', best_tables.length)
-
-      return best_tables
-    }
   }
-}
-
-async function tryTable(
-  day: Date,
-  party_size: number,
-  table_time: number,
-  restaurant: number
-) {
-  console.log('Trying table...')
-
-  try {
-    const best_table = await findTable(day, party_size, table_time, restaurant)
-    //console.log('Best table:', best_table)
-  } catch (error) {
-    console.error('Error:', error)
-  }
+  // TO BE UPDATED
+  return null
 }
 
 // pulls the venue, date, and guests requested
@@ -186,7 +119,7 @@ async function main() {
     const day = new Date(date)
     const restaurant = parseInt(venue, 10)
 
-    await tryTable(day, party_size, table_time, restaurant)
+    await findTable(day, party_size, table_time, restaurant)
   } catch (error) {
     console.error('Error:', error)
   }

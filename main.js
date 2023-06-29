@@ -43,7 +43,7 @@ var headers = {
 };
 function findTable(res_date, party_size, table_time, venue_id) {
     return __awaiter(this, void 0, void 0, function () {
-        var day, params, response, data, results, open_slots, restaurants, best_tables;
+        var day, params, response, data, results, open_slots, restaurants;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -87,9 +87,10 @@ function findTable(res_date, party_size, table_time, venue_id) {
                                 var startMinutes = new Date(slot.date.start).getMinutes();
                                 var slotTime = startHours + startMinutes / 60;
                                 var timeDifference = Math.abs(slotTime - table_time);
+                                // Filter for time slots that are within 30 minutes of selected time
                                 if (timeDifference <= 0.5) {
                                     result.push({
-                                        date: slot.date.start,
+                                        startTime: slot.date.start,
                                         roomType: slot.config.type,
                                         token: slot.config.token,
                                     });
@@ -109,44 +110,9 @@ function findTable(res_date, party_size, table_time, venue_id) {
                             };
                         });
                         console.log('restaurants', JSON.stringify(restaurants));
-                        // if there are available venues, filter for times that match our search
-                        // Filter for time slots that are within 30 minutes of selected time
-                        if (open_slots.length > 0) {
-                            best_tables = open_slots.filter(function (slot) {
-                                return Math.abs(Number(new Date(slot.date.start).getHours() +
-                                    new Date(slot.date.start).getMinutes() / 60) - table_time) <= 0.5;
-                            });
-                            //console.log('best tables', best_tables)
-                            //console.log('length', best_tables.length)
-                            return [2 /*return*/, best_tables];
-                        }
                     }
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function tryTable(day, party_size, table_time, restaurant) {
-    return __awaiter(this, void 0, void 0, function () {
-        var best_table, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    console.log('Trying table...');
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, findTable(day, party_size, table_time, restaurant)
-                        //console.log('Best table:', best_table)
-                    ];
-                case 2:
-                    best_table = _a.sent();
-                    return [3 /*break*/, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    console.error('Error:', error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    // TO BE UPDATED
+                    return [2 /*return*/, null];
             }
         });
     });
@@ -159,7 +125,7 @@ function readConfig() {
 }
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, venue, date, guests, party_size, table_time, day, restaurant, error_2;
+        var _a, venue, date, guests, party_size, table_time, day, restaurant, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -174,13 +140,13 @@ function main() {
                     table_time = 20.0;
                     day = new Date(date);
                     restaurant = parseInt(venue, 10);
-                    return [4 /*yield*/, tryTable(day, party_size, table_time, restaurant)];
+                    return [4 /*yield*/, findTable(day, party_size, table_time, restaurant)];
                 case 2:
                     _b.sent();
                     return [3 /*break*/, 4];
                 case 3:
-                    error_2 = _b.sent();
-                    console.error('Error:', error_2);
+                    error_1 = _b.sent();
+                    console.error('Error:', error_1);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
